@@ -7,6 +7,7 @@ module Api
 	    	end
 
 	    	def create
+	    		# binding.pry
 		        provider = Provider.new(provider_params)
 		        if provider.save
 		          render json: provider
@@ -17,6 +18,26 @@ module Api
 
 		    def show
 		    	render json: Provider.find(params[:id])
+		    end
+
+		    def update
+	    		# binding.pry
+		        provider = Provider.find(params[:id])
+		        if provider.update(provider_params)
+		          render json: provider
+		        else
+		          render json: provider.errors, status: 500
+		        end
+		    end
+
+		    def destroy
+		        provider = Provider.find_by(id: params[:id])
+		        if provider
+		          provider.destroy
+		          head :ok
+		        else
+		          render json: {"error" => "provider with id of #{params[:id]} not found"}, status: 404
+		        end
 		    end
 
 		    private
